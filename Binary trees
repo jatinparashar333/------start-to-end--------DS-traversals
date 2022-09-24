@@ -1,1 +1,174 @@
+#include<bits/stdc++.h>
+using namespace std;
 
+#define ll long long
+#define pb push_back
+#define fr(a,b) for(int i = a; i < b; i++)
+#define rep(i,a,b) for(int i = a; i < b; i++)
+#define mod 1000000007
+#define inf (1LL<<60)
+#define all(x) (x).begin(), (x).end()
+#define prDouble(x) cout << fixed << setprecision(10) << x
+#define triplet pair<ll,pair<ll,ll>>
+#define goog(tno) cout << "Case #" << tno <<": "
+#define fast_io ios_base::sync_with_stdio(false);cin.tie(NULL)
+#define read(x) int x; cin >> x
+#define jatin(x) int x;cin>>x;while(x--)
+
+void printer(int arr[],int n){
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+    cout<<"\n";
+    return;
+}
+int gcd(int a, int b)
+{
+
+    if(b == 0) {
+            return a;
+    }
+    else {
+        return gcd(b, a % b);
+    }
+}
+int lcm(int a,int b){
+    return a*b/gcd(a,b);
+}
+
+class Binarytree{
+    public:
+        int data;
+        Binarytree* left,*right;
+        Binarytree(int data){
+            this->data=data;
+            left=NULL;
+            right=NULL;
+        }
+};
+Binarytree* takeinput(){
+    int data;cin>>data;
+    if(data==-1){
+        return NULL;
+    }
+    Binarytree* node=new Binarytree(data);
+    node->left=takeinput();
+    node->right=takeinput();
+    return node;
+}
+void preorder(Binarytree* root){
+    if(!root){
+        return;
+    }
+    cout<<root->data<<" ";
+    preorder(root->left);
+    preorder(root->right);
+}
+void inorder(Binarytree* root){
+    if(!root){
+        return;
+    }
+    inorder(root->left);
+    cout<<root->data<<" ";
+    inorder(root->right);
+}
+void postorder(Binarytree* root){
+    if(!root){
+        return;
+    }
+    postorder(root->left);
+    postorder(root->right);
+    cout<<root->data<<" ";
+}
+void levelorder(Binarytree* root){
+    if(!root){
+        return;
+    }
+    queue<Binarytree*> q;
+    q.push(root);
+    while(!q.empty()){
+        int n=q.size();
+        for(int i=1;i<=n;i++){
+            Binarytree* temp=q.front();
+            q.pop();
+            if(temp->left){
+                q.push(temp->left);
+            }
+            if(temp->right){
+                q.push(temp->right);
+            }
+            cout<<temp->data<<" ";
+        }
+    }
+    return;
+}
+void boundaryorder_left(Binarytree* root,vector<int> &v){
+    if(!root){
+        return ;
+    }
+    if(root->left){
+        v.push_back(root->data);
+        boundaryorder_left(root->left,v);
+    }
+    else if(root->right){
+        v.push_back(root->data);
+        boundaryorder_left(root->right,v);
+    }
+}
+void boundaryorder_right(Binarytree* root,vector<int> &v){
+    if(!root){
+        return;
+    }
+    if(root->right){
+        boundaryorder_right(root->right,v);
+        v.push_back(root->data);
+    }
+    else if(root->left){
+        boundaryorder_right(root->left,v);
+        v.push_back(root->data);
+    }
+}
+void boundaryorder_leaf(Binarytree* root,vector<int> &v){
+    if(!root){
+        return;
+    }
+    
+    boundaryorder_leaf(root->left,v);
+    if(!(root->left) && !(root->right)){
+        v.push_back(root->data);
+    }
+    boundaryorder_leaf(root->right,v);
+}
+void boundaryorder(Binarytree* root){
+    if(!root){
+        return;
+    }
+    vector<int> v;
+    v.push_back(root->data);
+    boundaryorder_left(root->left,v);
+    boundaryorder_leaf(root,v);
+    boundaryorder_right(root->right,v);
+
+        vector<int> :: iterator it;
+        for(it=v.begin();it!=v.end();it++){
+            cout<<(*it)<<" ";
+        }
+}
+int main() {
+
+	ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+	
+	#ifndef ONLINE_JUDGE
+    freopen("inputf.in", "r", stdin);
+    freopen("outputf.out", "w", stdout);
+    #endif 
+    
+    Binarytree* root=takeinput();
+    preorder(root);cout<<"\n";
+    inorder(root);cout<<"\n";
+    postorder(root);cout<<"\n";
+    levelorder(root);cout<<"\n";
+    boundaryorder(root);cout<<"\n";
+    return 0;
+}
